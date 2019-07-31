@@ -47,6 +47,10 @@
 #include <windows.h>
 #include <bcrypt.h>
 
+#if defined(BCRYPT_KDF_RAW_SECRET) && defined(BCRYPT_DH_ALGORITHM)
+// BCRYPT_KDF_RAW_SECRET is available from Windows 8.1 and onwards
+#define LIBSSH2_USE_BCRYPT_DH 1
+#endif
 
 #define LIBSSH2_MD5 1
 
@@ -99,7 +103,9 @@ struct _libssh2_wincng_ctx {
     BCRYPT_ALG_HANDLE hAlgAES_ECB;
     BCRYPT_ALG_HANDLE hAlgRC4_NA;
     BCRYPT_ALG_HANDLE hAlg3DES_CBC;
+#if LIBSSH2_USE_BCRYPT_DH
     BCRYPT_ALG_HANDLE hAlgDH;
+#endif
 };
 
 struct _libssh2_wincng_ctx _libssh2_wincng;
@@ -385,10 +391,6 @@ _libssh2_bn *_libssh2_wincng_bignum_init(void);
 /*
  * Windows CNG backend: Diffie-Hellman support
  */
-#ifdef BCRYPT_KDF_RAW_SECRET
-// BCRYPT_KDF_RAW_SECRET is available from Windows 8.1 and onwards
-#define LIBSSH2_USE_BCRYPT_DH 1
-#endif
 
 #if LIBSSH2_USE_BCRYPT_DH
 typedef struct {

@@ -292,8 +292,10 @@ _libssh2_wincng_init(void)
         }
     }
 
+#if LIBSSH2_USE_BCRYPT_DH
     (void)BCryptOpenAlgorithmProvider(&_libssh2_wincng.hAlgDH,
                                       BCRYPT_DH_ALGORITHM, NULL, 0);
+#endif
 }
 
 void
@@ -313,7 +315,9 @@ _libssh2_wincng_free(void)
     (void)BCryptCloseAlgorithmProvider(_libssh2_wincng.hAlgAES_CBC, 0);
     (void)BCryptCloseAlgorithmProvider(_libssh2_wincng.hAlgRC4_NA, 0);
     (void)BCryptCloseAlgorithmProvider(_libssh2_wincng.hAlg3DES_CBC, 0);
+#if LIBSSH2_USE_BCRYPT_DH
     (void)BCryptCloseAlgorithmProvider(_libssh2_wincng.hAlgDH, 0);
+#endif
 
     memset(&_libssh2_wincng, 0, sizeof(_libssh2_wincng));
 }
