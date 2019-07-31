@@ -48,7 +48,7 @@
 #include <bcrypt.h>
 
 #if defined(BCRYPT_KDF_RAW_SECRET) && defined(BCRYPT_DH_ALGORITHM)
-// BCRYPT_KDF_RAW_SECRET is available from Windows 8.1 and onwards
+/* BCRYPT_KDF_RAW_SECRET is available from Windows 8.1 and onwards */
 #define LIBSSH2_USE_BCRYPT_DH 1
 #endif
 
@@ -394,11 +394,11 @@ _libssh2_bn *_libssh2_wincng_bignum_init(void);
 
 #if LIBSSH2_USE_BCRYPT_DH
 typedef struct {
-  // holds our private+public key components
-  BCRYPT_KEY_HANDLE dh_handle;
-  // records the parsed out modulus and generator parameters
-  // that are shared with the peer
-  BCRYPT_DH_PARAMETER_HEADER *dh_params;
+    /* holds our private+public key components */
+    BCRYPT_KEY_HANDLE dh_handle;
+    /* records the parsed out modulus and generator parameters that are shared
+    * with the peer */
+    BCRYPT_DH_PARAMETER_HEADER *dh_params;
 } _libssh2_dh_ctx;
 #else
 #define _libssh2_dh_ctx struct _libssh2_wincng_bignum *
