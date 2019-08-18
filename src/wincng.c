@@ -60,7 +60,7 @@
 #include <bcrypt.h>
 #include <math.h>
 #include "misc.h"
-#include <VersionHelpers.h>
+#include <versionhelpers.h>
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
