@@ -50,6 +50,8 @@
 #if defined(BCRYPT_KDF_RAW_SECRET) && defined(BCRYPT_DH_ALGORITHM)
 /* BCRYPT_KDF_RAW_SECRET is available from Windows 8.1 and onwards */
 #define LIBSSH2_USE_BCRYPT_DH 1
+#else
+#define LIBSSH2_USE_BCRYPT_DH 0
 #endif
 
 #define LIBSSH2_MD5 1
