@@ -2135,6 +2135,17 @@ _libssh2_wincng_bignum_free(_libssh2_bn *bn)
     }
 }
 
+#if LIBSSH2_USE_BCRYPT_DH
+static int is_windows_10_or_later(void)
+{
+    OSVERSIONINFOW vers;
+    vers.dwOSVersionInfoSize = sizeof(vers);
+    if(RtlGetVersion(&vers) != 0) {
+        return 0;
+    }
+    return vers.dwMajorVersion >= 10;
+}
+#endif
 
 /*
  * Windows CNG backend: Diffie-Hellman support.
@@ -2144,7 +2155,7 @@ void
 _libssh2_dh_init(_libssh2_dh_ctx *dhctx)
 {
 #if LIBSSH2_USE_BCRYPT_DH
-    if(IsWindows10OrGreater()) {
+    if(is_windows_10_or_later()) {
         dhctx->dh_handle = NULL;
         dhctx->dh_params = NULL;
         return;
@@ -2158,7 +2169,7 @@ void
 _libssh2_dh_dtor(_libssh2_dh_ctx *dhctx)
 {
 #if LIBSSH2_USE_BCRYPT_DH
-    if(IsWindows10OrGreater()) {
+    if(is_windows_10_or_later()) {
         if(dhctx->dh_handle) {
             BCryptDestroyKey(dhctx->dh_handle);
             dhctx->dh_handle = NULL;
@@ -2207,7 +2218,7 @@ _libssh2_dh_key_pair(_libssh2_dh_ctx *dhctx, _libssh2_bn *public,
                      _libssh2_bn *g, _libssh2_bn *p, int group_order)
 {
 #if LIBSSH2_USE_BCRYPT_DH
-    if(IsWindows10OrGreater()) {
+    if(is_windows_10_or_later()) {
         BCRYPT_DH_PARAMETER_HEADER *dh_params = NULL;
         unsigned long dh_params_len;
         unsigned char *blob = NULL;
@@ -2317,7 +2328,7 @@ _libssh2_dh_secret(_libssh2_dh_ctx *dhctx, _libssh2_bn *secret,
                    _libssh2_bn *f, _libssh2_bn *p)
 {
 #if LIBSSH2_USE_BCRYPT_DH
-    if(IsWindows10OrGreater()) {
+    if(is_windows_10_or_later()) {
         BCRYPT_KEY_HANDLE peer_public = NULL;
         BCRYPT_SECRET_HANDLE agreement = NULL;
         ULONG secret_len_bytes = 0;
