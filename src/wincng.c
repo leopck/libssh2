@@ -2136,6 +2136,14 @@ _libssh2_wincng_bignum_free(_libssh2_bn *bn)
 }
 
 #if LIBSSH2_USE_BCRYPT_DH
+/* We provide our own prototype for this function as the availability
+ * of the header that is documented to provide it is patchy across
+ * the various environments that the libssh2 CI builds on, and
+ * because the stdcall convention is important for the linker to
+ * be able to resolve the function in 32-bit MSVC compiler
+ * environments. */
+extern NTSTATUS __stdcall RtlGetVersion(OSVERSIONINFOW*);
+
 static int is_windows_10_or_later(void)
 {
     OSVERSIONINFOW vers;
