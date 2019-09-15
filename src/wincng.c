@@ -2140,7 +2140,7 @@ static int is_windows_10_or_later(void)
 {
     OSVERSIONINFOW vers;
     vers.dwOSVersionInfoSize = sizeof(vers);
-    if(RtlGetVersionW(&vers) != 0) {
+    if(RtlGetVersion(&vers) != 0) {
         return 0;
     }
     return vers.dwMajorVersion >= 10;
